@@ -48,6 +48,9 @@ class PyTest(TestCommand):
 
 # 'setup.py publish' shortcut.
 if sys.argv[-1] == 'publish':
+    os.system('rm -rf build')
+    os.system('rm -rf dist')
+    os.system('rm -rf audiotsm2.egg-info')
     os.system('python3 setup.py sdist bdist_wheel')
     os.system('twine upload dist/*')
     sys.exit()
