@@ -1,12 +1,6 @@
 A real-time audio time-scale modification library
 =================================================
 
-.. image:: https://readthedocs.org/projects/audiotsm/badge/?version=latest
-    :target: http://audiotsm.readthedocs.io/en/latest/?badge=latest
-    :alt: Documentation Status
-.. image:: https://travis-ci.org/Muges/audiotsm.svg?branch=master
-    :target: https://travis-ci.org/Muges/audiotsm
-    :alt: Build Status
 
 Audiotsm2 is the light-weight version of the original.
 
