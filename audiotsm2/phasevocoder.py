@@ -1,9 +1,4 @@
-# -*- coding: utf-8 -*-
-
-"""
-The :mod:`audiotsm.phasevocoder` module implements the phase vocoder time-scale
-modification procedure.
-"""
+'''audiotsm2/phasevocoder.py'''
 
 import numpy as np
 
@@ -12,16 +7,11 @@ from audiotsm.utils.windows import hanning
 
 
 def find_peaks(amplitude):
-    """Find the peaks in an array.
-
+    """
     A value is considered to be a peak if it is higher than its four closest
     neighbours.
-
-    :param amplitude: an array of floats of shape ``(n,)``.
-    :type amplitude: :class:`numpy.ndarray`
-    :returns: an array ``a`` of bools of shape ``(n,)``, where ``a[i]`` is
-        ``True`` if there is a peak in the ``amplitude`` array at index ``i``.
     """
+
     # Pad the array with -1 at the beginning and the end to avoid overflows.
     padded = np.concatenate((-np.ones(2), amplitude, -np.ones(2)))
 
@@ -39,25 +29,16 @@ def find_peaks(amplitude):
 
 
 def all_peaks(amplitude):
-    """A peak finder that considers all values to be peaks.
-
+    """
+    A peak finder that considers all values to be peaks.
     This is used for the phase vocoder without phase locking.
-    :param amplitude: an array of floats of shape ``(n,)``.
-    :type amplitude: :class:`numpy.ndarray`
-    :returns: an array ``a`` of bools of shape ``(n,)``, where ``a[i]`` is
-        ``True`` if there is a peak in the ``amplitude`` array at index ``i``.
     """
     return np.ones_like(amplitude, dtype=bool)
 
 
 def get_closest_peaks(peaks):
-    """Returns an array containing the index of the closest peak of each index.
-
-    :param peaks: an array of bools of shape ``(n,)``, as returned by
-        :func:`find_peaks`.
-    :type peaks: :class:`numpy.ndarray`
-    :returns: an array ``a`` of ints of shape ``(n,)``, where ``a[i]`` is the
-        index of the peak that is closest to ``i``.
+    """
+    Returns an array containing the index of the closest peak of each index.
     """
     closest_peak = np.empty_like(peaks, dtype=int)
     previous = -1
@@ -75,12 +56,11 @@ def get_closest_peaks(peaks):
 
 
 class PhaseVocoderConverter(Converter):
-    """A Converter implementing the phase vocoder time-scale modification
-    procedure."""
-    # pylint: disable=too-many-instance-attributes
-    def __init__(self, channels, frame_length, analysis_hop, synthesis_hop,
-                 peak_finder):
-        # pylint: disable=too-many-arguments
+    """
+    A Converter implementing the phase vocoder time-scale modification procedure.
+    """
+
+    def __init__(self, channels, frame_length, analysis_hop, synthesis_hop, peak_finder):
         self._channels = channels
         self._frame_length = frame_length
         self._synthesis_hop = synthesis_hop
@@ -96,8 +76,7 @@ class PhaseVocoderConverter(Converter):
         self._previous_phase = np.empty((channels, fft_length))
         self._output_phase = np.empty((channels, fft_length))
 
-        # Buffer used to compute the phase increment and the instantaneous
-        # frequency
+        # Buffer used to compute the phase increment and the instantaneous frequency
         self._buffer = np.empty(fft_length)
 
     def clear(self):
@@ -188,33 +167,8 @@ def phasevocoder(channels, speed=1., frame_length=2048, analysis_hop=None,
                  synthesis_hop=None, phase_locking=PhaseLocking.IDENTITY):
     """Returns a :class:`~audiotsm.base.tsm.TSM` object implementing the phase
     vocoder time-scale modification procedure.
-
-    In most cases, you should not need to set the ``frame_length``, the
-    ``analysis_hop`` or the ``synthesis_hop``. If you want to fine tune these
-    parameters, you can check the documentation of the
-    :class:`~audiotsm.base.analysis_synthesis.AnalysisSynthesisTSM` class to
-    see what they represent.
-
-    :param channels: the number of channels of the input signal.
-    :type channels: int
-    :param speed: the speed ratio by which the speed of the signal will be
-        multiplied (for example, if ``speed`` is set to 0.5, the output signal
-        will be half as fast as the input signal).
-    :type speed: float, optional
-    :param frame_length: the length of the frames.
-    :type frame_length: int, optional
-    :param analysis_hop: the number of samples between two consecutive analysis
-        frames (``speed * synthesis_hop`` by default). If ``analysis_hop`` is
-        set, the ``speed`` parameter will be ignored.
-    :type analysis_hop: int, optional
-    :param synthesis_hop: the number of samples between two consecutive
-        synthesis frames (``frame_length // 4`` by default).
-    :type synthesis_hop: int, optional
-    :param phase_locking: a phase locking strategy.
-    :type phase_locking: :class:`PhaseLocking`, optional
-    :returns: a :class:`audiotsm.base.tsm.TSM` object
     """
-    # pylint: disable=too-many-arguments
+
     if synthesis_hop is None:
         synthesis_hop = frame_length // 4
 
