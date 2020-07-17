@@ -3,20 +3,7 @@
 import wave
 import numpy as np
 
-from . import base
-
-
-class WavReader(base.Reader):
-    """A audiotsm2.io.base.Reader allowing to use a wav file as input
-    of a audiotsm2.base.tsm.TSM object.
-
-    You should close the audiotsm2.io.wav.WavReader after using it
-    with the audiotsm2.io.wav.WavReader.close method, or use it in a
-    with statement as follow:
-
-        with WavReader(filename) as reader:
-            # use reader...
-    """
+class WavReader():
     def __init__(self, filename):
         self._reader = wave.open(filename, 'rb')
 
@@ -71,17 +58,7 @@ class WavReader(base.Reader):
         self.close()
 
 
-class WavWriter(base.Writer):
-    """A audiotsm2.io.base.Writer allowing to use a wav file as output
-    of a audiotsm.base.tsm.TSM object.
-
-    You should close audiotsm2.io.wav.WavWriter after using it
-    with the audiotsm2.io.wav.WavWriter.close method, or use it in a
-    with statement as follow::
-
-        with WavWriter(filename, 2, 44100) as writer:
-            # use writer...
-    """
+class WavWriter():
     def __init__(self, filename, channels, samplerate):
         self._writer = wave.open(filename, 'wb')
         self._channels = channels

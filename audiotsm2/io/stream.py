@@ -3,10 +3,7 @@
 import numpy as np
 from sounddevice import OutputStream
 
-from . import base
-
-
-class StreamWriter(base.Writer):
+class StreamWriter():
     """
     A audiotsm2.io.base.Writer allowing to play the output of a
     audiotsm2.base.tsm.TSM object directly.
