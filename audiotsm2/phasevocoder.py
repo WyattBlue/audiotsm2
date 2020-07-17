@@ -2,8 +2,8 @@
 
 import numpy as np
 
-from audiotsm.base import AnalysisSynthesisTSM, Converter
-from audiotsm.utils.windows import hanning
+from audiotsm2.base import AnalysisSynthesisTSM, Converter
+from audiotsm2.utils.windows import hanning
 
 
 def find_peaks(amplitude):
