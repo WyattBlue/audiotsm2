@@ -36,6 +36,8 @@ class PyTest(TestCommand):
 
 # 'setup.py publish' shortcut.
 if sys.argv[-1] == 'publish':
+    os.system('rm -rf build')
+    os.system('rm -rf dist')
     os.system('python3 setup.py sdist bdist_wheel')
     os.system('twine upload dist/*')
     sys.exit()
@@ -50,6 +52,7 @@ setup(
     version=find_version(),
     description="A real-time audio time-scale modification library",
     long_description=long_description,
+    long_description_content_type='text/markdown',
     license="MIT",
     url="https://github.com/WyattBlue/audiotsm2",
     author="WyattBlue",
@@ -71,6 +74,7 @@ setup(
     },
 
     classifiers=[
+        'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
@@ -80,7 +84,6 @@ setup(
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
         'Programming Language :: Python :: Implementation :: CPython',
-        'Programming Language :: Python :: Implementation :: PyPy',
-        'Topic :: Multimedia :: Sound/Audio',
-    ]
+        'Programming Language :: Python :: Implementation :: PyPy'
+    ],
 )
