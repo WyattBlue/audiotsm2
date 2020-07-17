@@ -1,21 +1,16 @@
-# -*- coding: utf-8 -*-
-
-"""
-The :mod:`audiotsm.utils.cbuffer` module implements a circular buffer used to
-store multichannel audio data.
-"""
+'''utils/cbuffer.py'''
 
 import numpy as np
 
 
 class CBuffer(object):
-    """A :class:`CBuffer` is a circular buffer used to store multichannel audio
+    """A CBuffer is a circular buffer used to store multichannel audio
     data.
 
     It can be seen as a variable-size buffer whose length is bounded by
-    ``max_length``. The :func:`CBuffer.write` and :func:`CBuffer.right_pad`
+    max_length. The CBuffer.write and CBuffer.right_pad
     methods allow to add samples at the end of the buffer, while the
-    :func:`CBuffer.read` and :func:`CBuffer.remove` methods allow to remove
+    CBuffer.read and CBuffer.remove methods allow to remove
     samples from the beginning of the buffer.
 
     Contrary to the samples added by the :func:`CBuffer.write` and
@@ -26,12 +21,6 @@ class CBuffer(object):
     with the :func:`CBuffer.set_ready` method before being read with the
     :func:`CBuffer.peek`, :func:`CBuffer.read`, or :func:`CBuffer.write_to`
     methods.
-
-    :param channels: the number of channels of the buffer.
-    :type channels: int
-    :param max_length: the maximum length of the buffer (i.e. the maximum
-        number of samples that can be stored in each channel).
-    :type max_length: int
     """
     def __init__(self, channels, max_length):
         self._data = np.zeros((channels, max_length), dtype=np.float32)
@@ -47,15 +36,7 @@ class CBuffer(object):
             self._offset, self._length, self._ready, repr(self.to_array()))
 
     def add(self, buffer):
-        """Adds a ``buffer`` element-wise to the :class:`CBuffer`.
-
-        :param buffer: a matrix of shape (``m``, ``n``), with ``m`` the number
-            of channels and ``n`` the length of the buffer.
-        :type buffer: :class:`numpy.ndarray`
-        :raises ValueError: if the :class:`CBuffer` and the ``buffer`` do not
-            have the same number of channels or the :class:`CBuffer` is smaller
-            than the ``buffer`` (``self.length < n``).
-        """
+        """Adds a buffer element-wise to the CBuffer."""
         if buffer.shape[0] != self._data.shape[0]:
             raise ValueError("the two buffers should have the same number of "
                              "channels")
@@ -76,13 +57,8 @@ class CBuffer(object):
             self._data[:, :end] += buffer[:, self._max_length - start:n]
 
     def divide(self, array):
-        """Divides each channel of the :class:`CBuffer` element-wise by the
-        ``array``.
-
-        :param array: an array of shape (``n``,).
-        :type array: :class:`numpy.ndarray`
-        :raises ValueError: if the length of the :class:`CBuffer` is smaller
-            than the length of the array (``self.length < n``).
+        """
+        Divides each channel of the CBuffer element-wise by the array.
         """
         n = len(array)
         if n > self._length:
@@ -101,7 +77,7 @@ class CBuffer(object):
 
     @property
     def length(self):
-        """The number of samples of each channel of the :class:`CBuffer`."""
+        """The number of samples of each channel of the CBuffer."""
         return self._length
 
     def peek(self, buffer):
@@ -113,15 +89,6 @@ class CBuffer(object):
         :func:`CBuffer.set_ready` method in order to be read. This is done
         automatically by the :func:`CBuffer.write` and
         :func:`CBuffer.read_from` methods.
-
-        :param buffer: a matrix of shape (``m``, ``n``), with ``m`` the number
-            of channels and ``n`` the length of the buffer, where the samples
-            will be written.
-        :type buffer: :class:`numpy.ndarray`
-        :returns: the number of samples that were read from the
-            :class:`CBuffer`.
-        :raises ValueError: if the :class:`CBuffer` and the ``buffer`` do not
-            have the same number of channels.
         """
         if buffer.shape[0] != self._data.shape[0]:
             raise ValueError("the two buffers should have the same number of "
@@ -145,39 +112,26 @@ class CBuffer(object):
         return n
 
     def read(self, buffer):
-        """Reads as many samples from the :class:`CBuffer` as possible, removes
-        them from the :class:`CBuffer`, writes them to the ``buffer``, and
+        """Reads as many samples from the CBuffer as possible, removes
+        them from the CBuffer, writes them to the buffer, and
         returns the number of samples that were read.
 
         The samples need to be marked as ready to be read with the
-        :func:`CBuffer.set_ready` method in order to be read. This is done
-        automatically by the :func:`CBuffer.write` and
-        :func:`CBuffer.read_from` methods.
-
-        :param buffer: a matrix of shape (``m``, ``n``), with ``m`` the number
-            of channels and ``n`` the length of the buffer, where the samples
-            will be written.
-        :type buffer: :class:`numpy.ndarray`
-        :returns: the number of samples that were read from the
-            :class:`CBuffer`.
-        :raises ValueError: if the :class:`CBuffer` and the ``buffer`` do not
-            have the same number of channels.
+        CBuffer.set_ready() method in order to be read. This is done
+        automatically by the CBuffer.write() and
+        CBuffer.read_from methods.
         """
         n = self.peek(buffer)
         self.remove(n)
         return n
 
     def read_from(self, reader):
-        """Reads as many samples as possible from ``reader``, writes them to
-        the :class:`CBuffer`, and returns the number of samples that were read.
+        """Reads as many samples as possible from reader, writes them to
+        the CBuffer, and returns the number of samples that were read.
 
         The written samples are marked as ready to be read.
-
-        :param reader: a :class:`audiotsm.io.base.Reader`.
-        :returns: the number of samples that were read from ``reader``.
-        :raises ValueError: if the :class:`CBuffer` and ``reader`` do not have
-            the same number of channels.
         """
+
         # Compute the slice of data that will be written to
         start = (self._offset + self._length) % self._max_length
         end = start + self._max_length - self._length
@@ -204,17 +158,14 @@ class CBuffer(object):
 
     @property
     def remaining_length(self):
-        """The number of samples that can be added to the :class:`CBuffer`."""
+        """The number of samples that can be added to the CBuffer."""
         return self._max_length - self._ready
 
     def remove(self, n):
-        """Removes the first ``n`` samples of the :class:`CBuffer`, preventing
+        """
+        Removes the first n samples of the CBuffer, preventing
         them to be read again, and leaving more space for new samples to be
         written.
-
-        :param n: the number of samples to remove.
-        :type n: int
-        :returns: the number of samples that were removed.
         """
         if n >= self._length:
             n = self._length
@@ -241,15 +192,11 @@ class CBuffer(object):
         return n
 
     def right_pad(self, n):
-        """Add zeros at the end of the :class:`CBuffer`.
+        """Add zeros at the end of the CBuffer.
 
         The added samples are not marked as ready to be read. The
-        :func:`CBuffer.set_ready` will need to be called in order to be able to
+        CBuffer.set_ready will need to be called in order to be able to
         read them.
-
-        :param n: the number of zeros to add.
-        :type n: int
-        :raises ValueError: if there is not enough space to add the zeros.
         """
         if n > self._max_length - self._length:
             raise ValueError("not enough space remaining in :class:`CBuffer`")
@@ -257,42 +204,23 @@ class CBuffer(object):
         self._length += n
 
     def set_ready(self, n):
-        """Mark the next ``n`` samples as ready to be read.
-
-        :param n: the number of samples to mark as ready to be read.
-        :type n: int
-        :raises ValueError: if there is less than ``n`` samples that are not
-            ready yet.
-        """
+        """Mark the next n samples as ready to be read."""
         if self._ready + n > self._length:
             raise ValueError("not enough samples to be marked as ready")
 
         self._ready += n
 
     def to_array(self):
-        """Returns an array containing the same data as the :class:`CBuffer`.
-
-        :returns: a :class:`numpy.ndarray` of shape (``m``, ``n``), with ``m``
-            the number of channels and ``n`` the length of the buffer.
-        """
+        """Returns an array containing the same data as the CBuffer."""
         out = np.empty((self._channels, self._ready))
         self.peek(out)
         return out
 
     def write(self, buffer):
-        """Writes as many samples from the ``buffer`` to the :class:`CBuffer`
+        """Writes as many samples from the buffer to the CBuffer
         as possible, and returns the number of samples that were read.
 
         The written samples are marked as ready to be read.
-
-        :param buffer: a matrix of shape (``m``, ``n``), with ``m``
-            the number of channels and ``n`` the length of the buffer, where
-            the samples will be read.
-        :type buffer: :class:`numpy.ndarray`
-        :returns: the number of samples that were written to the
-            :class:`CBuffer`.
-        :raises ValueError: if the :class:`CBuffer` and the ``buffer`` do not
-            have the same number of channels.
         """
         if buffer.shape[0] != self._data.shape[0]:
             raise ValueError("the two buffers should have the same number of "
@@ -322,20 +250,15 @@ class CBuffer(object):
         return n
 
     def write_to(self, writer):
-        """Writes as many samples as possible to ``writer``, deletes them from
-        the :class:`CBuffer`, and returns the number of samples that were
+        """Writes as many samples as possible to writer, deletes them from
+        the CBuffer, and returns the number of samples that were
         written.
 
         The samples need to be marked as ready to be read with the
-        :func:`CBuffer.set_ready` method in order to be read. This is done
-        automatically by the :func:`CBuffer.write` and
-        :func:`CBuffer.read_from` methods.
-
-        :param writer: a :class:`audiotsm.io.base.Writer`.
-        :returns: the number of samples that were written to ``writer``.
-        :raises ValueError: if the :class:`CBuffer` and ``writer`` do not have
-            the same number of channels.
+        CBuffer.set_ready method in order to be read. This is done
+        automatically by the CBuffer.write and CBuffer.read_from methods.
         """
+
         # Compute the slice of data the values will be read from
         start = self._offset
         end = self._offset + self._ready

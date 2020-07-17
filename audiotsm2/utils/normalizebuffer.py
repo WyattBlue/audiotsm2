@@ -1,7 +1,7 @@
-# -*- coding: utf-8 -*-
+'''utils/normalizebuffer.py'''
 
 """
-The :mod:`audiotsm.normalizebuffer` module implements a mono-channel circular
+The audiotsm2.normalizebuffer module implements a mono-channel circular
 buffer used to normalize audio buffers.
 """
 
@@ -9,11 +9,9 @@ import numpy as np
 
 
 class NormalizeBuffer(object):
-    """A :class:`NormalizeBuffer` is a mono-channel circular buffer, used to
+    """
+    A NormalizeBuffer is a mono-channel circular buffer, used to
     normalize audio buffers.
-
-    :param length: the length of the :class:`NormalizeBuffer`.
-    :type length: int
     """
     def __init__(self, length):
         self._data = np.zeros(length)
@@ -25,12 +23,8 @@ class NormalizeBuffer(object):
             self._offset, self._length, repr(self.to_array()))
 
     def add(self, window):
-        """Adds a window element-wise to the :class:`NormalizeBuffer`.
-
-        :param window: an array of shape (``n``,).
-        :type window: :class:`numpy.ndarray`
-        :raises ValueError: if the window is larger than the buffer (``n >
-            self.length``).
+        """
+        Adds a window element-wise to the NormalizeBuffer.
         """
         n = len(window)
         if n > self._length:
@@ -54,11 +48,7 @@ class NormalizeBuffer(object):
         return self._length
 
     def remove(self, n):
-        """Removes the first ``n`` values of the :class:`NormalizeBuffer`.
-
-        :param n: the number of values to remove.
-        :type n: int
-        """
+        """Removes the first n values of the :class:`NormalizeBuffer."""
         if n >= self._length:
             n = self._length
         if n == 0:
@@ -80,10 +70,8 @@ class NormalizeBuffer(object):
 
     def to_array(self, start=0, end=None):
         """Returns an array containing the same data as the
-        :class:`NormalizeBuffer`, from index ``start`` (included) to index
-        ``end`` (exluded).
-
-        :returns: :class:`numpy.ndarray`
+        NormalizeBuffer, from index start (included) to index
+        end (exluded).
         """
         if end is None:
             end = self._length

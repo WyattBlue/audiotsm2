@@ -9,17 +9,8 @@ class Reader(object):
     def empty(self):
         raise NotImplementedError()
 
-    def read(self, buffer):
-        raise NotImplementedError()
-
-    def skip(self, n):
-        raise NotImplementedError()
-
 
 class Writer(object):
     @property
     def channels(self):
-        raise NotImplementedError()
-
-    def write(self, buffer):
         raise NotImplementedError()

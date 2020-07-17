@@ -1,9 +1,6 @@
-# -*- coding: utf-8 -*-
+'''base/__init__.py'''
 
 """
-audiotsm.base
-~~~~~~~~~~~~~
-
 This module provides base classes for the implementation of time-scale
 modification procedures.
 """

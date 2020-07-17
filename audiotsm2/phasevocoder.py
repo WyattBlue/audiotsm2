@@ -83,7 +83,6 @@ class PhaseVocoderConverter(Converter):
         self._first = True
 
     def convert_frame(self, frame):
-        # pylint: disable=arguments-differ
         for k in range(0, self._channels):
             # Compute the FFT of the analysis frame
             stft = np.fft.rfft(frame[k])
@@ -143,13 +142,12 @@ class PhaseVocoderConverter(Converter):
 
 class PhaseLocking(object):
     """Enumeration of phase locking strategies."""
-    # pylint: disable=too-few-public-methods
 
+    # No phase locking.
     NONE = 0
-    """No phase locking."""
 
+    # Identity phase locking.
     IDENTITY = 1
-    """Identity phase locking."""
 
     @classmethod
     def from_str(cls, name):
@@ -164,8 +162,9 @@ class PhaseLocking(object):
 
 
 def phasevocoder(channels, speed=1., frame_length=2048, analysis_hop=None,
-                 synthesis_hop=None, phase_locking=PhaseLocking.IDENTITY):
-    """Returns a :class:`~audiotsm.base.tsm.TSM` object implementing the phase
+    synthesis_hop=None, phase_locking=PhaseLocking.IDENTITY):
+    """
+    Returns audiotsm2.base.tsm.TSM object implementing the phase
     vocoder time-scale modification procedure.
     """
 

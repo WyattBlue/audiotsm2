@@ -1,18 +1,16 @@
-# -*- coding: utf-8 -*-
+'''io/array.py'''
 
 import numpy as np
 
 from . import base
 
 class ArrayReader(base.Reader):
-    """A :class:`~audiotsm2.io.base.Reader` allowing to use
-    :class:`numpy.ndarray` as input of a :class:`~audiotsm2.base.tsm.TSM`
-    object.
+    """
+    A audiotsm2.io.base.Reader allowing to use numpy.ndarray as
+    input of a audiotsm2.base.tsm.TSM object.
 
-    :param data: a matrix of shape (``m``, ``n``), with ``m`` the number of
-        channels and ``n`` the length of the buffer, where the samples will be
-        read.
-    :type data: :class:`numpy.ndarray`
+    a matrix of shape (m, n), with m the number of channels and n
+    the length of the buffer, where the samples will be read.
     """
     def __init__(self, data):
         self._data = data
@@ -27,8 +25,7 @@ class ArrayReader(base.Reader):
 
     def read(self, buffer):
         if buffer.shape[0] != self._data.shape[0]:
-            raise ValueError("the two buffers should have the same number of "
-                             "channels")
+            raise ValueError("the two buffers should have the same number of channels")
 
         # Number of samples to read
         n = min(buffer.shape[1], self._data.shape[1])
@@ -49,14 +46,12 @@ class ArrayReader(base.Reader):
 
 
 class ArrayWriter(base.Writer):
-    """A :class:`~audiotsm2.io.base.Writer` allowing to get the output of a
-    :class:`~audiotsm2.base.tsm.TSM` object as a :class:`numpy.ndarray`.
+    """
+    A audiotsm2.io.base.Writer allowing to get the output of a
+    audiotsm2.base.tsm.TSM object as a numpy.ndarray.
 
-    Writing to an~audiotsm2.io.array.ArrayWriter` will add the data at
-    the end of the :attr:`~audiotsm2.io.array.ArrayWriter.data` attribute.
-
-    :param channels: the number of channels of the signal.
-    :type channels: int
+    Writing to an audiotsm2.io.array.ArrayWriter will add the data at
+    the end of the audiotsm2.io.array.ArrayWriter.data attribute.
     """
 
     def __init__(self, channels):
@@ -92,19 +87,15 @@ class ArrayWriter(base.Writer):
 
 
 class FixedArrayWriter(base.Writer):
-    """A :class:`~audiotsm2.io.base.Writer` allowing to use
-    :class:`numpy.ndarray` as output of a TSM object.
+    """
+    A audiotsm2.io.base.Writer allowing to use
+    numpy.ndarray as output of a TSM object.
 
-    Contrary to an :class:`~audiotsm2.io.array.ArrayWriter`, a
-    :class:`~audiotsm2.io.array.FixedArrayWriter` takes the buffer in which the
+    Contrary to an audiotsm2.io.array.ArrayWriter, a
+    audiotsm2.io.array.FixedArrayWriter takes the buffer in which the
     data will be written as a parameter of its constructor. The buffer is of
     fixed size, and it will not be possible to write more samples to the
-    :class:`~audiotsm2.io.array.FixedArrayWriter` than the buffer can contain.
-
-    :param data: a matrix of shape (``m``, ``n``), with ``m`` the number of
-        channels and ``n`` the length of the buffer, where the samples will be
-        written.
-    :type data: :class:`numpy.ndarray`
+    audiotsm2.io.array.FixedArrayWriter than the buffer can contain.
     """
     def __init__(self, data):
         self._data = data

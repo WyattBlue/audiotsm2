@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-The :mod:`audiotsm.base.analysis_synthesis` module provides a base class for
+The audiotsm2.base.analysis_synthesis module provides a base class for
 real-time analysis-synthesis based audio time-scale modification procedures.
 """
 
@@ -171,27 +171,8 @@ class AnalysisSynthesisTSM(TSM):
 
 
 class Converter(object):
-    """
-    A base class for objects implementing the conversion of analysis frames
-    into synthesis frames.
-    """
-
     def clear(self):
-        """Clears the state of the Converter, making it ready to be used on
-        another signal (or another part of a signal). It is called by the
-        :func:`~audiotsm.base.tsm.TSM.clear` method and the constructor of
-        :class:`AnalysisSynthesisTSM`."""
-        # pylint: disable=no-self-use
         return
 
-    def convert_frame(self, analysis_frame):
-        """
-        Converts an analysis frame into a synthesis frame.
-        """
-        raise NotImplementedError
-
     def set_analysis_hop(self, analysis_hop):
-        """Change the value of the analysis hop. This is called by the
-        :func:`~audiotsm.base.tsm.TSM.set_speed` method."""
-        # pylint: disable=no-self-use,unused-argument
         return

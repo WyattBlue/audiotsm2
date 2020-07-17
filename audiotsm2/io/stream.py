@@ -7,14 +7,14 @@ from . import base
 
 
 class StreamWriter(base.Writer):
-    """A :class:`~audiotsm.io.base.Writer` allowing to play the output of a
-    :class:`~audiotsm.base.tsm.TSM` object directly.
+    """
+    A audiotsm2.io.base.Writer allowing to play the output of a
+    audiotsm2.base.tsm.TSM object directly.
     """
     def __init__(self, channels, samplerate, **attrs):
         self._channels = channels
 
-        self._stream = OutputStream(samplerate=samplerate, channels=channels,
-                                    **attrs)
+        self._stream = OutputStream(samplerate=samplerate, channels=channels, **attrs)
         self._stream.start()
 
     @property
@@ -24,14 +24,13 @@ class StreamWriter(base.Writer):
     def write(self, buffer):
         if buffer.shape[0] != self.channels:
             raise ValueError("the buffer should have the same number of "
-                             "channels as the WavWriter")
+                             "channels as WavWriter")
 
         self._stream.write(np.ascontiguousarray(buffer.T))
 
         return buffer.shape[1]
 
     def stop(self):
-        """Stop the stream."""
         self._stream.stop()
 
     def __enter__(self):

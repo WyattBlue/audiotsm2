@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+'''gstreamer/base.py'''
 
 """
 The audiotsm2.gstreamer.base module provides a base class for gstreamer
@@ -20,12 +20,8 @@ CAPS = Gst.Caps.from_string(
 
 
 def audioformatinfo_to_dtype(info):
-    """Return the data type corresponding to a ``GstAudio.AudioFormatInfo``
-    object.
-
-    :param info: a ``GstAudio.AudioFormatInfo``.
-    :returns: the corresponding data type, to be used in :mod:`numpy`
-        functions.
+    """
+    Return the data type corresponding to a GstAudio.AudioFormatInfo object.
     """
     endianness = '<' if info.endianness == GLib.LITTLE_ENDIAN else '>'
 
@@ -46,24 +42,21 @@ def audioformatinfo_to_dtype(info):
 
 
 class GstTSM(BaseTransform):
-    """Gstreamer TSM plugin.
+    """
+    Gstreamer TSM plugin.
 
-    Subclasses should implement the :func:`~GstTSM.create_tsm` method and
+    Subclasses should implement the GstTSM.create_tsm method and
     provide two class attributes:
 
-    - ``__gstmetadata__ = (longname, classification, description, author)``.
+    - __gstmetadata__ = (longname, classification, description, author).
       See the documentation of the gst_element_class_set_metadata_ function for
       more details.
-    - ``plugin_name``, the name of the plugin.
+    - plugin_name, the name of the plugin.
 
-    Calling the :func:`~GstTSM.register` class method on a subclass will
+    Calling the GstTSM.register class method on a subclass will
     register it, enabling you to instantiate an audio filter with
-    ``Gst.ElementFactory.make(plugin_name)``.
-
-    .. _gst_element_class_set_metadata:
-        https://gstreamer.freedesktop.org/data/doc/gstreamer/head/gstreamer/html/GstElement.html#gst-element-class-set-metadata
-    """  # noqa: E501
-    # pylint: disable=no-member
+    Gst.ElementFactory.make(plugin_name).
+    """
 
     __gsttemplates__ = (Gst.PadTemplate.new("src",
                                             Gst.PadDirection.SRC,
@@ -95,10 +88,10 @@ class GstTSM(BaseTransform):
 
     @classmethod
     def register(cls):
-        """Register the plugin.
-
+        """
         Register the plugin to make it possible to instantiate it with
-        ``Gst.ElementFactory.make``."""
+        Gst.ElementFactory.make.
+        """
         Gst.Plugin.register_static(
             Gst.VERSION_MAJOR, Gst.VERSION_MINOR, cls.plugin_name,
             cls.get_metadata('description'), cls.plugin_init, __version__,
@@ -150,7 +143,9 @@ class GstTSM(BaseTransform):
         gstbuffer.set_size(size)
 
     def do_sink_event(self, event):
-        """Sink pad event handler."""
+        """
+        Sink pad event handler.
+        """
         if event.type == Gst.EventType.CAPS:
             # CAPS event, used to negotiate the format with the "upstream"
             # gstreamer element.
@@ -221,14 +216,11 @@ class GstTSM(BaseTransform):
         return self.srcpad.push_event(event)
 
     def do_transform(self, in_buffer, out_buffer):
-        """Run the data of ``in_buffer`` through the
-        :class:`~audiotsm.base.tsm.TSM` object and write the output to
-        ``out_buffer``.
-
-        :param in_buffer: a ``Gst.Buffer`` containing the input data.
-        :param out_buffer: a ``Gst.Buffer`` where the output data will be
-            written.
         """
+        Run the data of in_buffer through the audiotsm.base.tsm.TSM object
+        and write the output to out_buffer.
+        """
+
         # There is a bug that increases the refcount of out_buffer, making it
         # non writable (https://bugzilla.gnome.org/show_bug.cgi?id=727702#c4).
         # Set the refcount to 1 to fix this.
@@ -257,14 +249,13 @@ class GstTSM(BaseTransform):
         return Gst.FlowReturn.OK
 
     def do_transform_size(self, direction, caps, size, othercaps):
-        """Returns the size of the output buffer given the size of the input
-        buffer."""
+        """
+        Returns the size of the output buffer given the size of the input buffer.
+        """
         input_length = size // self._bps
         output_length = self._tsm.get_max_output_length(input_length)
         output_size = output_length * self._bps
         return True, output_size
 
     def create_tsm(self, channels):
-        """Returns the :class:`~audiotsm.base.tsm.TSM` object used by the audio
-        filter."""
         raise NotImplementedError()
