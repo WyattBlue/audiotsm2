@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
 """
-The :mod:`~audiotsm.gstreamer.base` module provides a base class for gstreamer
-plugin using :class:`~audiotsm.base.tsm.TSM` objects.
+The audiotsm2.gstreamer.base module provides a base class for gstreamer
+plugin using audiotsm2.base.tsm.TSM objects.
 """
 
 import numpy as np
@@ -10,12 +10,10 @@ import gi
 gi.require_version('Gst', '1.0')
 gi.require_version('GstAudio', '1.0')
 
-# pylint: disable=wrong-import-position
 from gi.repository import GObject, GLib, Gst, GstAudio
-from audiotsm import __version__
-from audiotsm.io.array import ArrayReader, ArrayWriter
+from audiotsm2 import __version__
+from audiotsm2.io.array import ArrayReader, ArrayWriter
 from gstbasetransform import BaseTransform
-# pylint: enable=wrong-import-position
 
 CAPS = Gst.Caps.from_string(
     "audio/x-raw,format=S16LE,layout=interleaved")
@@ -107,10 +105,8 @@ class GstTSM(BaseTransform):
             'MIT/X11', 'audiotsm', 'audiotsm', '')
 
     def _gstbuffer_to_ndarray(self, gstbuffer):
-        """Return the data contained in ``gstbuffer`` as a
-        :class:`numpy.ndarray`.
-
-        :param gstbuffer: a :class:`Gst.Buffer`.
+        """
+        Return the data contained in gstbuffer as a numpy.ndarray.
         """
         _, mapinfo = gstbuffer.map(Gst.MapFlags.READ)
         data = mapinfo.data
@@ -122,15 +118,11 @@ class GstTSM(BaseTransform):
         return data
 
     def _ndarray_to_gstbuffer(self, gstbuffer, data):
-        """Write the ``data`` to ``gstbuffer``.
-
+        """
+        Write the data to gstbuffer.
         This method is a bit hack-ish. It would be better to set the size of
-        the :class:`Gst.Buffer` in advance with the
-        :func:`GstBase.BaseTransform.do_transform_size` virtual method, but it
-        is not possible to do so with pygst.
-
-        :param gstbuffer: a :class:`Gst.Buffer`.
-        :param data: a :class:`numpy.ndarray`.
+        the Gst.Buffer in advance with the GstBase.BaseTransform.do_transform_size
+        virtual method, but it is not possible to do so with pygst.
         """
         length = data.shape[1]
 

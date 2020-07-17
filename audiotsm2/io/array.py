@@ -1,19 +1,12 @@
 # -*- coding: utf-8 -*-
 
-"""
-The :mod:`audiotsm.io.array` module provides a Reader and Writers allowing to
-use a :class:`numpy.ndarray` as input or output of a
-:class:`~audiotsm.base.tsm.TSM` object.
-"""
-
 import numpy as np
 
 from . import base
 
-
 class ArrayReader(base.Reader):
-    """A :class:`~audiotsm.io.base.Reader` allowing to use
-    :class:`numpy.ndarray` as input of a :class:`~audiotsm.base.tsm.TSM`
+    """A :class:`~audiotsm2.io.base.Reader` allowing to use
+    :class:`numpy.ndarray` as input of a :class:`~audiotsm2.base.tsm.TSM`
     object.
 
     :param data: a matrix of shape (``m``, ``n``), with ``m`` the number of
@@ -56,11 +49,11 @@ class ArrayReader(base.Reader):
 
 
 class ArrayWriter(base.Writer):
-    """A :class:`~audiotsm.io.base.Writer` allowing to get the output of a
-    :class:`~audiotsm.base.tsm.TSM` object as a :class:`numpy.ndarray`.
+    """A :class:`~audiotsm2.io.base.Writer` allowing to get the output of a
+    :class:`~audiotsm2.base.tsm.TSM` object as a :class:`numpy.ndarray`.
 
-    Writing to an :class:`~audiotsm.io.array.ArrayWriter` will add the data at
-    the end of the :attr:`~audiotsm.io.array.ArrayWriter.data` attribute.
+    Writing to an~audiotsm2.io.array.ArrayWriter` will add the data at
+    the end of the :attr:`~audiotsm2.io.array.ArrayWriter.data` attribute.
 
     :param channels: the number of channels of the signal.
     :type channels: int
@@ -85,9 +78,10 @@ class ArrayWriter(base.Writer):
 
     @property
     def data(self):
-        """A :class:`numpy.ndarray` of shape (``m``, ``n``), with ``m`` the
-        number of channels and ``n`` the length of the data, where the samples
-        have written."""
+        """
+        A numpy.ndarray of shape (m, n), with m the number of channels and n the
+        length of the data, where the samples have written.
+        """
         if not self._data:
             return np.ndarray((self._channels, 0), dtype=np.float32)
 
@@ -98,14 +92,14 @@ class ArrayWriter(base.Writer):
 
 
 class FixedArrayWriter(base.Writer):
-    """A :class:`~audiotsm.io.base.Writer` allowing to use
+    """A :class:`~audiotsm2.io.base.Writer` allowing to use
     :class:`numpy.ndarray` as output of a TSM object.
 
-    Contrary to an :class:`~audiotsm.io.array.ArrayWriter`, a
-    :class:`~audiotsm.io.array.FixedArrayWriter` takes the buffer in which the
+    Contrary to an :class:`~audiotsm2.io.array.ArrayWriter`, a
+    :class:`~audiotsm2.io.array.FixedArrayWriter` takes the buffer in which the
     data will be written as a parameter of its constructor. The buffer is of
     fixed size, and it will not be possible to write more samples to the
-    :class:`~audiotsm.io.array.FixedArrayWriter` than the buffer can contain.
+    :class:`~audiotsm2.io.array.FixedArrayWriter` than the buffer can contain.
 
     :param data: a matrix of shape (``m``, ``n``), with ``m`` the number of
         channels and ``n`` the length of the buffer, where the samples will be

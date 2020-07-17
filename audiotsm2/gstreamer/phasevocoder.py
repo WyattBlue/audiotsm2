@@ -1,19 +1,16 @@
 # -*- coding: utf-8 -*-
 
 """
-The :mod:`audiotsm.gstreamer.phasevocoder` module implements an audio filter
+The audiotsm.gstreamer.phasevocoder module implements an audio filter
 allowing to use the phase vocoder procedure with gstreamer.
 """
 
 import gi
 gi.require_version('Gst', '1.0')
 
-# pylint: disable=wrong-import-position
 from gi.repository import GObject, Gst
-from audiotsm import phasevocoder
+from audiotsm2 import phasevocoder
 from .base import GstTSM
-# pylint: enable=wrong-import-position
-
 
 class PhaseVocoder(GstTSM):
     """Phase vocoder gstreamer audio filter."""

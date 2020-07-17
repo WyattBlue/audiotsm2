@@ -7,17 +7,15 @@ real-time analysis-synthesis based audio time-scale modification procedures.
 
 import numpy as np
 
-from audiotsm.utils import (windows, CBuffer, NormalizeBuffer)
+from audiotsm2.utils import (windows, CBuffer, NormalizeBuffer)
 from .tsm import TSM
 
 EPSILON = 0.0001
 
 
 class AnalysisSynthesisTSM(TSM):
-    def __init__(self, converter, channels, frame_length, analysis_hop,
-                 synthesis_hop, analysis_window, synthesis_window,
-                 delta_before=0, delta_after=0):
-        # pylint: disable=too-many-arguments
+    def __init__(self, converter, channels, frame_length, analysis_hop, synthesis_hop,
+        analysis_window, synthesis_window, delta_before=0, delta_after=0):
         self._converter = converter
 
         self._channels = channels
@@ -173,8 +171,10 @@ class AnalysisSynthesisTSM(TSM):
 
 
 class Converter(object):
-    """A base class for objects implementing the conversion of analysis frames
-    into synthesis frames."""
+    """
+    A base class for objects implementing the conversion of analysis frames
+    into synthesis frames.
+    """
 
     def clear(self):
         """Clears the state of the Converter, making it ready to be used on
@@ -185,21 +185,8 @@ class Converter(object):
         return
 
     def convert_frame(self, analysis_frame):
-        """Converts an analysis frame into a synthesis frame.
-
-        :param analysis_frame: a matrix of shape (``m``, ``delta_before +
-            frame_length + delta_after``), with ``m`` the number of channels,
-            containing the analysis frame and some samples before and after
-            (as specified by the ``delta_before`` and ``delta_after``
-            parameters of the :class:`AnalysisSynthesisTSM` calling the
-            :class:`Converter`).
-
-            ``analysis_frame[:, delta_before:-delta_after]`` contains the
-            actual analysis frame (without the samples preceeding and following
-            it).
-        :type analysis_frame: :class:`numpy.ndarray`
-        :returns: a synthesis frame represented as a :class:`numpy.ndarray` of
-            shape (``m``, ``frame_length``), with ``m`` the number of channels.
+        """
+        Converts an analysis frame into a synthesis frame.
         """
         raise NotImplementedError
 
