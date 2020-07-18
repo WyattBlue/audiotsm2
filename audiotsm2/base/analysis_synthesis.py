@@ -42,7 +42,7 @@ class AnalysisSynthesisTSM(TSM):
         self._normalize_window = windows.product(self._analysis_window,
                                                  self._synthesis_window)
 
-        if self._normalize_window is None:
+        if(self._normalize_window is None):
             self._normalize_window = np.ones(self._frame_length)
 
         # Initialize the buffers
@@ -73,13 +73,14 @@ class AnalysisSynthesisTSM(TSM):
         self._converter.clear()
 
     def flush_to(self, writer):
-        if self._in_buffer.remaining_length == 0:
-            raise RuntimeError("There is still data to process in the input "
-                               "buffer, flush_to method should only be called "
-                               "when write_to returns True.")
+        if(self._in_buffer.remaining_length == 0):
+            raise RuntimeError(
+                "There is still data to process in the input buffer, flush_to method "
+                "should only be called when write_to returns True."
+            )
 
         n = self._out_buffer.write_to(writer)
-        if self._out_buffer.ready == 0:
+        if(self._out_buffer.ready == 0):
             # The output buffer is empty
             self.clear()
             return n, True
@@ -88,7 +89,7 @@ class AnalysisSynthesisTSM(TSM):
 
     def get_max_output_length(self, input_length):
         input_length -= self._skip_input_samples
-        if input_length <= 0:
+        if(input_length <= 0):
             return 0
 
         n_frames = input_length // self._analysis_hop + 1
@@ -130,13 +131,13 @@ class AnalysisSynthesisTSM(TSM):
     def read_from(self, reader):
         n = reader.skip(self._skip_input_samples)
         self._skip_input_samples -= n
-        if self._skip_input_samples > 0:
+        if(self._skip_input_samples > 0):
             return n
 
         n += self._in_buffer.read_from(reader)
 
-        if (self._in_buffer.remaining_length == 0 and
-                self._out_buffer.remaining_length >= self._synthesis_hop):
+        if(self._in_buffer.remaining_length == 0 and
+            self._out_buffer.remaining_length >= self._synthesis_hop):
             # The input buffer has enough data to process, and there is enough
             # space in the output buffer to store the output
             self._process_frame()
@@ -161,8 +162,7 @@ class AnalysisSynthesisTSM(TSM):
         n = self._out_buffer.write_to(writer)
         self._out_buffer.right_pad(n)
 
-        if (self._in_buffer.remaining_length > 0 and
-                self._out_buffer.ready == 0):
+        if(self._in_buffer.remaining_length > 0 and self._out_buffer.ready == 0):
             # There is not enough data to process in the input buffer, and the
             # output buffer is empty
             return n, True

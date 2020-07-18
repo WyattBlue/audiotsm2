@@ -4,34 +4,16 @@ import os
 import re
 import sys
 from setuptools import setup, find_packages
-from setuptools.command.test import test as TestCommand
-
 
 def find_version():
-    """
-    Read the package's version from __init__.py
-    """
-    version_filename = os.path.abspath("audiotsm2/__init__.py")
+    version_filename = os.path.abspath('audiotsm2/__init__.py')
     with open(version_filename) as fileobj:
         version_content = fileobj.read()
     version_match = re.search(r"^__version__ = ['\"]([^'\"]*)['\"]",
-                              version_content, re.M)
+        version_content, re.M)
     if version_match:
         return version_match.group(1)
-    raise RuntimeError("Unable to find version string.")
-
-
-class PyTest(TestCommand):
-    def finalize_options(self):
-        TestCommand.finalize_options(self)
-        self.test_args = ['--cov=audiotsm2', 'tests/unit']
-        self.test_suite = True
-
-    def run_tests(self):
-        import pytest
-
-        errcode = pytest.main(self.test_args)
-        sys.exit(errcode)
+    raise RuntimeError('Unable to find version string.')
 
 
 # 'setup.py publish' shortcut.
@@ -48,31 +30,21 @@ with open('README.md', 'r') as f:
 
 
 setup(
-    name="audiotsm2",
+    name='audiotsm2',
     version=find_version(),
-    description="A real-time audio time-scale modification library",
+    description='A real-time audio time-scale modification library',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    license="MIT",
-    url="https://github.com/WyattBlue/audiotsm2",
-    author="WyattBlue",
-    author_email="git@WyattBlue.fr",
+    license='MIT',
+    url='https://github.com/WyattBlue/audiotsm2',
+    author='WyattBlue',
+    author_email='wyattbluesandbox@gmail.com',
 
     packages=find_packages(),
 
     install_requires=[
-        "numpy",
+        'numpy',
     ],
-    tests_require=[
-        "pytest",
-        "pytest-coverage",
-        "sounddevice",
-    ],
-
-    cmdclass={
-        'test': PyTest,
-    },
-
     classifiers=[
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
