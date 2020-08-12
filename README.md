@@ -1,5 +1,5 @@
 <h1 style="center">AudioTSM 2</h1>
-<h2 style="center">A real-time audio time-scale modification library</h2>
+<h2 style="center">An ultrafast audio time-scale modification library</h2>
 
 ```terminal
 pip install audiotsm2

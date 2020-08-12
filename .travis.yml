@@ -6,4 +6,5 @@ python:
   - "3.8"
 install: pip3 install audiotsm2
 script:
- - echo 'Hello World!'
+ - python3
+ - print('Hello World!')

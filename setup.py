@@ -32,7 +32,7 @@ with open('README.md', 'r') as f:
 setup(
     name='audiotsm2',
     version=find_version(),
-    description='A real-time audio time-scale modification library',
+    description='An ultrafast audio time-scale modification library',
     long_description=long_description,
     long_description_content_type='text/markdown',
     license='MIT',
