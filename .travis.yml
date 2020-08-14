@@ -4,7 +4,6 @@ python:
   - "3.5"
   - "3.6"
   - "3.8"
-install: pip3 install audiotsm2
+install: pip3 install numpy
 script:
- - python3
- - print('Hello World!')
+ - python3 test.py

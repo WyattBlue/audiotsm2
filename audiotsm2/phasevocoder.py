@@ -43,8 +43,8 @@ def get_closest_peaks(peaks):
     closest_peak = np.empty_like(peaks, dtype=int)
     previous = -1
     for i, is_peak in enumerate(peaks):
-        if is_peak:
-            if previous >= 0:
+        if(is_peak):
+            if(previous >= 0):
                 closest_peak[previous:(previous + i) // 2 + 1] = previous
                 closest_peak[(previous + i) // 2 + 1:i] = i
             else:
@@ -93,7 +93,7 @@ class PhaseVocoderConverter(Converter):
             peaks = self._find_peaks(amplitude)
             closest_peak = get_closest_peaks(peaks)
 
-            if self._first:
+            if(self._first):
                 # Leave the first frame unchanged
                 self._output_phase[k, :] = phase
             else:
@@ -168,19 +168,19 @@ def phasevocoder(channels, speed=1., frame_length=2048, analysis_hop=None,
     vocoder time-scale modification procedure.
     """
 
-    if synthesis_hop is None:
+    if(synthesis_hop is None):
         synthesis_hop = frame_length // 4
 
-    if analysis_hop is None:
+    if(analysis_hop is None):
         analysis_hop = int(synthesis_hop * speed)
 
     analysis_window = hanning(frame_length)
     synthesis_window = hanning(frame_length)
 
-    if phase_locking == PhaseLocking.NONE:
+    if(phase_locking == PhaseLocking.NONE):
         # No phase locking: all freqyency bins are considered to be peaks
         peak_finder = all_peaks
-    elif phase_locking == PhaseLocking.IDENTITY:
+    elif(phase_locking == PhaseLocking.IDENTITY):
         peak_finder = find_peaks
     else:
         raise ValueError(
