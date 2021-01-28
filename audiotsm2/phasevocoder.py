@@ -131,25 +131,23 @@ class PhaseVocoderConverter():
         self._analysis_hop = analysis_hop
 
 
-def phasevocoder(channels, speed=1., frame_length=2048, analysis_hop=None,
-    synthesis_hop=None):
-    """
-    Returns audiotsm2.base.tsm.TSM object implementing the phase
-    vocoder time-scale modification procedure.
-    """
+def phasevocoder(channels, reader, writer, speed=1.):
+
+    FRAME_LENGTH = 2048
+    analysis_hop = None
+    synthesis_hop = None
 
     if(synthesis_hop is None):
-        synthesis_hop = frame_length // 4
+        synthesis_hop = FRAME_LENGTH // 4
 
     if(analysis_hop is None):
         analysis_hop = int(synthesis_hop * speed)
 
-    analysis_window = hanning(frame_length)
-    synthesis_window = hanning(frame_length)
+    analysis_window = hanning(FRAME_LENGTH)
+    synthesis_window = hanning(FRAME_LENGTH)
 
-    converter = PhaseVocoderConverter(channels, frame_length, analysis_hop,
-                                      synthesis_hop, find_peaks)
+    converter = PhaseVocoderConverter(channels, FRAME_LENGTH, analysis_hop, synthesis_hop,
+        find_peaks)
 
-    return AnalysisSynthesisTSM(
-        converter, channels, frame_length, analysis_hop, synthesis_hop,
-        analysis_window, synthesis_window)
+    AnalysisSynthesisTSM(converter, channels, FRAME_LENGTH, analysis_hop, synthesis_hop,
+        analysis_window, synthesis_window).run(reader, writer)
