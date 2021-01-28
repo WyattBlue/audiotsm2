@@ -1,7 +1,6 @@
-'''utils/cbuffer.py'''
+'''cbuffer.py'''
 
 import numpy as np
-
 
 class CBuffer(object):
     """A CBuffer is a circular buffer used to store multichannel audio
@@ -12,15 +11,6 @@ class CBuffer(object):
     methods allow to add samples at the end of the buffer, while the
     CBuffer.read and CBuffer.remove methods allow to remove
     samples from the beginning of the buffer.
-
-    Contrary to the samples added by the :func:`CBuffer.write` and
-    :func:`CBuffer.read_from`, those added by the :func:`CBuffer.right_pad`
-    method are considered not to be ready to be read. Effectively, this means
-    that they can be modified by the :func:`CBuffer.add` and
-    :func:`CBuffer.divide` methods, but have to be marked as ready to be read
-    with the :func:`CBuffer.set_ready` method before being read with the
-    :func:`CBuffer.peek`, :func:`CBuffer.read`, or :func:`CBuffer.write_to`
-    methods.
     """
     def __init__(self, channels, max_length):
         self._data = np.zeros((channels, max_length), dtype=np.float32)

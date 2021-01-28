@@ -1,13 +1,8 @@
-'''base/tsm.py'''
-
-"""
-The audiotsm2.base.tsm module provides an abstract class for real-time
-audio time-scale modification procedures.
-"""
+'''tsm.py'''
 
 class TSM(object):
-    """An abstract class for real-time audio time-scale modification
-    procedures.
+    """
+    A terrible class that needs to be replaced ASAP
     """
 
     def run(self, reader, writer, flush=True):

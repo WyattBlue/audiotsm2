@@ -1,4 +1,4 @@
-'''utils/windows.py'''
+'''windows.py'''
 
 import numpy as np
 

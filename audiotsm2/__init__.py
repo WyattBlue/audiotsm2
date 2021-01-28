@@ -1,6 +1,11 @@
 '''__init__.py'''
 
-__version__ = "0.2.1"
+import os
+import sys
 
-from .wsola import wsola
-from .phasevocoder import phasevocoder, PhaseLocking
+# Fix not being able to find other modules.
+dirPath = os.path.dirname(os.path.realpath(__file__))
+sys.path.append(os.path.abspath(dirPath))
+
+from phasevocoder import phasevocoder
+from wav import WavReader, WavWriter

@@ -1,10 +1,9 @@
-.cache
-.coverage
-.eggs
-.tox
+
 dist
 build
 *.egg-info
 __pycache__
 *.pyc
 out.wav
+
+.DS_Store

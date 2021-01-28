@@ -1,17 +1,14 @@
-# -*- coding: utf-8 -*-
-
-"""
-The audiotsm2.base.analysis_synthesis module provides a base class for
-real-time analysis-synthesis based audio time-scale modification procedures.
-"""
+'''analysis_synthesis.py'''
 
 import numpy as np
 
-from audiotsm2.utils import (windows, CBuffer, NormalizeBuffer)
-from .tsm import TSM
+import windows
+
+from normalizebuffer import NormalizeBuffer
+from cbuffer import CBuffer
+from tsm import TSM
 
 EPSILON = 0.0001
-
 
 class AnalysisSynthesisTSM(TSM):
     def __init__(self, converter, channels, frame_length, analysis_hop, synthesis_hop,

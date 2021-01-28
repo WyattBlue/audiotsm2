@@ -1,4 +1,4 @@
-'''io/array.py'''
+'''array.py'''
 
 import numpy as np
 

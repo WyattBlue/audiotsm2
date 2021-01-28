@@ -7,7 +7,6 @@ buffer used to normalize audio buffers.
 
 import numpy as np
 
-
 class NormalizeBuffer(object):
     """
     A NormalizeBuffer is a mono-channel circular buffer, used to
