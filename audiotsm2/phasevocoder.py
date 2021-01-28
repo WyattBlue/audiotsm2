@@ -131,7 +131,7 @@ class PhaseVocoderConverter():
         self._analysis_hop = analysis_hop
 
 
-def phasevocoder(channels, reader, writer, speed=1.):
+def phasevocoder(inFile, outFile, speed=1.):
 
     FRAME_LENGTH = 2048
     analysis_hop = None
@@ -146,8 +146,13 @@ def phasevocoder(channels, reader, writer, speed=1.):
     analysis_window = hanning(FRAME_LENGTH)
     synthesis_window = hanning(FRAME_LENGTH)
 
-    converter = PhaseVocoderConverter(channels, FRAME_LENGTH, analysis_hop, synthesis_hop,
-        find_peaks)
+    from wav import WavReader, WavWriter
 
-    AnalysisSynthesisTSM(converter, channels, FRAME_LENGTH, analysis_hop, synthesis_hop,
-        analysis_window, synthesis_window).run(reader, writer)
+    with WavReader(inFile) as reader:
+        with WavWriter(outFile, reader.channels, reader.samplerate) as writer:
+
+            converter = PhaseVocoderConverter(reader.channels, FRAME_LENGTH, analysis_hop,
+                synthesis_hop, find_peaks)
+
+            AnalysisSynthesisTSM(converter, reader.channels, FRAME_LENGTH, analysis_hop,
+                synthesis_hop, analysis_window, synthesis_window).run(reader, writer)

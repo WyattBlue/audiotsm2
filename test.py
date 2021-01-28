@@ -1,5 +1,3 @@
-from audiotsm2 import phasevocoder, WavReader, WavWriter
+from audiotsm2 import phasevocoder
 
-with WavReader('sine.wav') as reader:
-    with WavWriter('out.wav', reader.channels, reader.samplerate) as writer:
-        phasevocoder(reader.channels, reader, writer, speed=0.5)
+phasevocoder('sine.wav', 'out.wav', speed=0.5)
