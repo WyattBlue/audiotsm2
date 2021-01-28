@@ -36,8 +36,16 @@ class AnalysisSynthesisTSM(TSM):
         self._skip_output_samples = 0
 
         # Compute the normalize window
-        self._normalize_window = windows.product(self._analysis_window,
-                                                 self._synthesis_window)
+        def _product(window1, window2):
+            if(window1 is None):
+                return window2
+
+            if(window2 is None):
+                return window1
+
+            return window1 * window2
+
+        self._normalize_window = _product(self._analysis_window, self._synthesis_window)
 
         if(self._normalize_window is None):
             self._normalize_window = np.ones(self._frame_length)
@@ -165,11 +173,3 @@ class AnalysisSynthesisTSM(TSM):
             return n, True
 
         return n, False
-
-
-class Converter(object):
-    def clear(self):
-        return
-
-    def set_analysis_hop(self, analysis_hop):
-        return

@@ -3,7 +3,7 @@
 import numpy as np
 
 from windows import hanning
-from analysis_synthesis import AnalysisSynthesisTSM, Converter
+from analysis_synthesis import AnalysisSynthesisTSM
 
 def find_peaks(amplitude):
     """
@@ -54,7 +54,7 @@ def get_closest_peaks(peaks):
     return closest_peak
 
 
-class PhaseVocoderConverter(Converter):
+class PhaseVocoderConverter():
     """
     A Converter implementing the phase vocoder time-scale modification procedure.
     """
@@ -139,7 +139,7 @@ class PhaseVocoderConverter(Converter):
         self._analysis_hop = analysis_hop
 
 
-class PhaseLocking(object):
+class PhaseLocking():
     """Enumeration of phase locking strategies."""
 
     # No phase locking.

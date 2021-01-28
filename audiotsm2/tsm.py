@@ -1,6 +1,6 @@
 '''tsm.py'''
 
-class TSM(object):
+class TSM():
     """
     A terrible class that needs to be replaced ASAP
     """

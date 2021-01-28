@@ -2,15 +2,9 @@
 
 import numpy as np
 
-class CBuffer(object):
+class CBuffer():
     """A CBuffer is a circular buffer used to store multichannel audio
     data.
-
-    It can be seen as a variable-size buffer whose length is bounded by
-    max_length. The CBuffer.write and CBuffer.right_pad
-    methods allow to add samples at the end of the buffer, while the
-    CBuffer.read and CBuffer.remove methods allow to remove
-    samples from the beginning of the buffer.
     """
     def __init__(self, channels, max_length):
         self._data = np.zeros((channels, max_length), dtype=np.float32)
@@ -67,7 +61,6 @@ class CBuffer(object):
 
     @property
     def length(self):
-        """The number of samples of each channel of the CBuffer."""
         return self._length
 
     def peek(self, buffer):
@@ -143,7 +136,6 @@ class CBuffer(object):
 
     @property
     def ready(self):
-        """The number of samples that can be read."""
         return self._ready
 
     @property
@@ -189,12 +181,11 @@ class CBuffer(object):
         read them.
         """
         if n > self._max_length - self._length:
-            raise ValueError("not enough space remaining in :class:`CBuffer`")
+            raise ValueError("not enough space remaining in CBuffer")
 
         self._length += n
 
     def set_ready(self, n):
-        """Mark the next n samples as ready to be read."""
         if self._ready + n > self._length:
             raise ValueError("not enough samples to be marked as ready")
 
@@ -243,10 +234,6 @@ class CBuffer(object):
         """Writes as many samples as possible to writer, deletes them from
         the CBuffer, and returns the number of samples that were
         written.
-
-        The samples need to be marked as ready to be read with the
-        CBuffer.set_ready method in order to be read. This is done
-        automatically by the CBuffer.write and CBuffer.read_from methods.
         """
 
         # Compute the slice of data the values will be read from
