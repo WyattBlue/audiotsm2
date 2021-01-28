@@ -27,14 +27,6 @@ def find_peaks(amplitude):
     return peaks
 
 
-def all_peaks(amplitude):
-    """
-    A peak finder that considers all values to be peaks.
-    This is used for the phase vocoder without phase locking.
-    """
-    return np.ones_like(amplitude, dtype=bool)
-
-
 def get_closest_peaks(peaks):
     """
     Returns an array containing the index of the closest peak of each index.
@@ -139,29 +131,8 @@ class PhaseVocoderConverter():
         self._analysis_hop = analysis_hop
 
 
-class PhaseLocking():
-    """Enumeration of phase locking strategies."""
-
-    # No phase locking.
-    NONE = 0
-
-    # Identity phase locking.
-    IDENTITY = 1
-
-    @classmethod
-    def from_str(cls, name):
-        """Returns a phase locking strategy given its name."""
-        if name.lower() == 'none':
-            return cls.NONE
-        elif name.lower() == 'identity':
-            return cls.IDENTITY
-        else:
-            raise ValueError(
-                'Invalid phase locking name: "{}"'.format(name))
-
-
 def phasevocoder(channels, speed=1., frame_length=2048, analysis_hop=None,
-    synthesis_hop=None, phase_locking=PhaseLocking.IDENTITY):
+    synthesis_hop=None):
     """
     Returns audiotsm2.base.tsm.TSM object implementing the phase
     vocoder time-scale modification procedure.
@@ -176,17 +147,8 @@ def phasevocoder(channels, speed=1., frame_length=2048, analysis_hop=None,
     analysis_window = hanning(frame_length)
     synthesis_window = hanning(frame_length)
 
-    if(phase_locking == PhaseLocking.NONE):
-        # No phase locking: all freqyency bins are considered to be peaks
-        peak_finder = all_peaks
-    elif(phase_locking == PhaseLocking.IDENTITY):
-        peak_finder = find_peaks
-    else:
-        raise ValueError(
-            'Invalid phase_locking value: "{}"'.format(phase_locking))
-
     converter = PhaseVocoderConverter(channels, frame_length, analysis_hop,
-                                      synthesis_hop, peak_finder)
+                                      synthesis_hop, find_peaks)
 
     return AnalysisSynthesisTSM(
         converter, channels, frame_length, analysis_hop, synthesis_hop,
