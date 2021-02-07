@@ -8,3 +8,4 @@ dirPath = os.path.dirname(os.path.realpath(__file__))
 sys.path.append(os.path.abspath(dirPath))
 
 from phasevocoder import phasevocoder
+from soundstretch import soundstretch
